@@ -1,0 +1,595 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 30px 25px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+/* Music Player - Top Right */
+.music-player {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    z-index: 100;
+}
+
+.music-toggle {
+    background: white;
+    border: 2px solid #4CAF50;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.music-toggle:hover {
+    transform: scale(1.1);
+}
+
+.music-label {
+    font-size: 10px;
+    color: #888;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 10px;
+    border-radius: 10px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 14px;
+}
+
+.status-message {
+    background: #e3f2fd;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #1565c0;
+    font-weight: 500;
+}
+
+/* Greeting Message */
+.greeting-message {
+    background: linear-gradient(135deg, #ffe6e9, #ffd4d8);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 25px;
+    text-align: center;
+    border: 2px solid #ff6b81;
+}
+
+.heart-animation {
+    font-size: 48px;
+    display: inline-block;
+    animation: heartBeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    14% { transform: scale(1.3); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.3); }
+    70% { transform: scale(1); }
+}
+
+.greeting-message h2 {
+    color: #d63031;
+    font-size: 22px;
+    margin: 10px 0;
+}
+
+/* Slideshow */
+.slideshow-container {
+    position: relative;
+    margin: 15px 0;
+    border-radius: 15px;
+    overflow: hidden;
+    background: #000;
+    height: 300px;
+}
+
+.slide {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+.slide-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.slide-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.slide-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    cursor: pointer;
+    font-size: 24px;
+    transition: all 0.3s;
+    border-radius: 5px;
+    z-index: 10;
+}
+
+.slide-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+
+.dots-container {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin: 0 5px;
+    background: #bbb;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.dot:hover {
+    background: #888;
+}
+
+.dot.active {
+    background: #f5576c;
+    transform: scale(1.2);
+}
+
+.auto-play-info {
+    text-align: center;
+    padding: 5px 0 10px 0;
+    font-size: 12px;
+    color: #888;
+}
+
+.no-photos-message {
+    padding: 30px 20px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    margin: 15px 0;
+    color: #666;
+}
+
+/* Love Message */
+.love-message-box {
+    background: linear-gradient(135deg, #fff5f5, #ffe0e6);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 15px 0;
+    border: 2px solid #ff6b81;
+}
+
+.message-icon {
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.love-message {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #2d3436;
+    font-style: italic;
+    text-align: center;
+    font-family: 'Georgia', serif;
+}
+
+.message-signature {
+    text-align: right;
+    color: #d63031;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Monthsary Details */
+.monthsary-details {
+    text-align: left;
+    margin-top: 15px;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(214, 48, 49, 0.1);
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-item.highlight {
+    background: rgba(214, 48, 49, 0.1);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-top: 5px;
+}
+
+.label {
+    color: #666;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.value {
+    color: #d63031;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+/* Sections */
+.section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px dashed rgba(0, 0, 0, 0.1);
+}
+
+.section h3 {
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+/* Upload Sections */
+.upload-music {
+    background: #fce4ec;
+    padding: 20px;
+    border-radius: 15px;
+    border: 3px solid #e91e63;
+}
+
+.upload-music h3 {
+    color: #c2185b;
+}
+
+.upload-photos {
+    background: #e3f2fd;
+    padding: 20px;
+    border-radius: 15px;
+    border: 3px solid #2196F3;
+}
+
+.upload-photos h3 {
+    color: #1976D2;
+}
+
+.upload-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group input[type="date"] {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    font-size: 16px;
+    background: white;
+}
+
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px dashed #ddd;
+    border-radius: 12px;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+}
+
+.form-group input[type="file"]:hover {
+    border-color: #4CAF50;
+}
+
+.message-input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: 'Georgia', serif;
+    resize: vertical;
+    min-height: 100px;
+    background: white;
+}
+
+.message-input:focus {
+    outline: none;
+    border-color: #f5576c;
+}
+
+small {
+    display: block;
+    margin-top: 5px;
+    color: #888;
+    font-size: 12px;
+}
+
+/* Buttons */
+.btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: white;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+}
+
+.btn-message {
+    background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+}
+
+.btn-message:hover {
+    box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
+}
+
+.btn-upload-photos {
+    background: #2196F3;
+}
+
+.btn-upload-photos:hover {
+    background: #1976D2;
+    box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+}
+
+.btn-upload-music {
+    background: #e91e63;
+}
+
+.btn-upload-music:hover {
+    background: #c2185b;
+    box-shadow: 0 5px 15px rgba(233, 30, 99, 0.4);
+}
+
+.btn-danger {
+    background: #ff4444;
+}
+
+.btn-danger:hover {
+    background: #cc0000;
+}
+
+.btn-clear-photos {
+    background: #ff9800;
+}
+
+.btn-clear-photos:hover {
+    background: #e65100;
+}
+
+.photo-count {
+    margin-top: 10px;
+    padding: 10px;
+    background: #e8f5e9;
+    border-radius: 8px;
+    color: #2e7d32;
+    text-align: center;
+    font-weight: 500;
+}
+
+.button-group {
+    margin-top: 10px;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    margin-top: 25px;
+    color: #888;
+    font-size: 13px;
+}
+
+.version {
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 3px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+    .card {
+        padding: 20px 15px;
+    }
+    .header h1 {
+        font-size: 24px;
+    }
+    .greeting-message h2 {
+        font-size: 19px;
+    }
+    .detail-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 3px;
+    }
+    .slideshow-container {
+        height: 250px;
+    }
+    .slide-btn {
+        padding: 10px 15px;
+        font-size: 18px;
+    }
+    .btn {
+        font-size: 18px;
+        padding: 14px;
+    }
+    .music-toggle {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .card {
+        background: rgba(30, 30, 30, 0.95);
+    }
+    .header h1 {
+        color: #eee;
+    }
+    .subtitle {
+        color: #aaa;
+    }
+    .section h3 {
+        color: #ddd;
+    }
+    .form-group input[type="date"],
+    .form-group input[type="file"],
+    .message-input {
+        background: #2a2a2a;
+        color: white;
+        border-color: #444;
+    }
+    .upload-label {
+        color: #aaa;
+    }
+    .greeting-message {
+        background: linear-gradient(135deg, #3d1f24, #4a252a);
+    }
+    .greeting-message h2 {
+        color: #ff6b81;
+    }
+    .label {
+        color: #aaa;
+    }
+    .value {
+        color: #ff6b81;
+    }
+    .love-message-box {
+        background: linear-gradient(135deg, #3d1f24, #4a252a);
+        border-color: #ff6b81;
+    }
+    .love-message {
+        color: #f0e6e6;
+    }
+    .upload-photos {
+        background: #1a2a3a;
+        border-color: #2196F3;
+    }
+    .upload-music {
+        background: #2a1a22;
+        border-color: #e91e63;
+    }
+    .status-message {
+        background: #1a2a3a;
+        color: #64b5f6;
+    }
+    .photo-count {
+        background: #1e3a1e;
+        color: #a5d6a7;
+    }
+    .footer {
+        color: #666;
+    }
+    .music-toggle {
+        background: #2a2a2a;
+        color: white;
+        border-color: #4CAF50;
+    }
+    .music-label {
+        background: rgba(30, 30, 30, 0.9);
+        color: #aaa;
+    }
+    .no-photos-message {
+        color: #aaa;
+        background: rgba(0, 0, 0, 0.3);
+    }
+}
