@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>💕 Monthsary Slideshow</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- MUSIC PLAYER -->
+            {% if music_url %}
+            <div class="music-player">
+                <audio id="bgMusic" loop>
+                    <source src="{{ music_url }}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <button onclick="toggleMusic()" class="music-toggle" id="musicBtn">🔊</button>
+                <div class="music-label">Background Music</div>
+            </div>
+            {% endif %}
+
+            <div class="header">
+                <h1>💕 Monthsary Slideshow</h1>
+                <p class="subtitle">Celebrate your love with photos!</p>
+            </div>
+
+            {% if message %}
+            <div class="status-message">{{ message }}</div>
+            {% endif %}
+
+            {% if monthsary_data %}
+            <div class="greeting-message">
+                <div class="heart-animation">❤️</div>
+                <h2>Happy {{ monthsary_data.months }}th Monthsary! 🎉</h2>
+                
+                {% if photos and photos|length > 0 %}
+                <div class="slideshow-container">
+                    <div class="slideshow">
+                        {% for photo in photos %}
+                        <div class="slide">
+                            <img src="{{ photo }}" alt="Memory {{ loop.index }}" class="slide-image">
+                            <div class="slide-caption">Memory {{ loop.index }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <button class="slide-btn prev" onclick="changeSlide(-1)">❮</button>
+                    <button class="slide-btn next" onclick="changeSlide(1)">❯</button>
+                    
+                    <div class="dots-container">
+                        {% for photo in photos %}
+                        <span class="dot" onclick="currentSlide({{ loop.index0 }})"></span>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="auto-play-info">▶ Auto-playing</div>
+                </div>
+                {% else %}
+                <div class="no-photos-message">
+                    <p>📸 No photos yet. Upload your memories below!</p>
+                </div>
+                {% endif %}
+                
+                {% if love_message %}
+                <div class="love-message-box">
+                    <div class="message-icon">💌</div>
+                    <p class="love-message">{{ love_message }}</p>
+                    <div class="message-signature">- Your Love ❤️</div>
+                </div>
+                {% endif %}
+                
+                <div class="monthsary-details">
+                    <div class="detail-item">
+                        <span class="label">Together Since</span>
+                        <span class="value">{{ monthsary_data.start_date }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Months Together</span>
+                        <span class="value">{{ monthsary_data.months }} months</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Total Days Together</span>
+                        <span class="value">{{ monthsary_data.total_days }} days</span>
+                    </div>
+                    {% if monthsary_data.days_until is not none and monthsary_data.days_until > 0 %}
+                    <div class="detail-item highlight">
+                        <span class="label">Next Monthsary</span>
+                        <span class="value">In {{ monthsary_data.days_until }} days</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- DATE SELECTION -->
+            <div class="section">
+                <h3>📅 Select Your Anniversary Date</h3>
+                <form method="POST">
+                    <div class="form-group">
+                        <input type="date" name="start_date" value="{{ today }}" required>
+                    </div>
+                    <button type="submit" class="btn-primary">💖 Celebrate Monthsary</button>
+                </form>
+            </div>
+
+            <!-- LOVE MESSAGE -->
+            <div class="section">
+                <h3>💌 Write Your Love Message</h3>
+                <form method="POST">
+                    <div class="form-group">
+                        <textarea name="love_message" rows="4" placeholder="Write a special message for your love... 💕" class="message-input">{{ love_message }}</textarea>
+                    </div>
+                    <button type="submit" class="btn-message">💕 Save Love Message</button>
+                </form>
+            </div>
+
+            <!-- MUSIC UPLOAD -->
+            <div class="section upload-music">
+                <h3>🎵 Upload Background Music</h3>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="music-upload" class="upload-label">Choose a music file from your device</label>
+                        <input type="file" id="music-upload" name="music" accept="audio/*" required>
+                        <small style="display: block; margin-top: 5px; color: #888;">Supports: MP3, WAV, OGG, M4A</small>
+                    </div>
+                    <button type="submit" class="btn-upload-music">🎵 Upload Music</button>
+                </form>
+                {% if music_url %}
+                <div class="photo-count" style="background: #e8f5e9;">
+                    🎵 Music uploaded! Click 🔊 in top-right to toggle
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- PHOTO UPLOAD -->
+            <div class="section upload-photos">
+                <h3>📸 Upload Multiple Photos</h3>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="photos-upload" class="upload-label">Select multiple photos from your device</label>
+                        <input type="file" id="photos-upload" name="photos" accept="image/*" multiple required>
+                        <small style="display: block; margin-top: 5px; color: #888;">Hold Ctrl (Windows) or Cmd (Mac) to select multiple</small>
+                    </div>
+                    <button type="submit" class="btn-upload-photos">📤 Upload Photos</button>
+                </form>
+                {% if photos and photos|length > 0 %}
+                <div class="photo-count">
+                    📷 {{ photos|length }} photo(s) in slideshow
+                </div>
+                <div class="button-group">
+                    <button onclick="clearPhotos()" class="btn-clear-photos">🗑️ Clear All Photos</button>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- RESET -->
+            <div class="section">
+                <button onclick="resetData()" class="btn-danger">🗑️ Reset All Data</button>
+            </div>
+
+            <div class="footer">
+                <p>Made with ❤️ for your special someone</p>
+                <p class="version">📸 Photo Slideshow with Music</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // SLIDESHOW VARIABLES
+        let slideIndex = 0;
+        let slideInterval;
+
+        // MUSIC CONTROL
+        let isMusicPlaying = false;
+
+        function toggleMusic() {
+            const audio = document.getElementById('bgMusic');
+            const btn = document.getElementById('musicBtn');
+            if (audio.paused) {
+                audio.play()
+                    .then(() => {
+                        isMusicPlaying = true;
+                        btn.textContent = '🔊';
+                        btn.style.background = '#4CAF50';
+                    })
+                    .catch(err => {
+                        console.log('Audio play failed:', err);
+                        btn.textContent = '🔇';
+                    });
+            } else {
+                audio.pause();
+                isMusicPlaying = false;
+                btn.textContent = '🔇';
+                btn.style.background = '#ff4444';
+            }
+        }
+
+        // Auto-play music on page load if available
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('bgMusic');
+            const btn = document.getElementById('musicBtn');
+            if (audio) {
+                audio.play()
+                    .then(() => {
+                        isMusicPlaying = true;
+                        if (btn) {
+                            btn.textContent = '🔊';
+                            btn.style.background = '#4CAF50';
+                        }
+                    })
+                    .catch(err => {
+                        console.log('Autoplay blocked. Click the music button to play.');
+                        if (btn) {
+                            btn.textContent = '🔇';
+                            btn.style.background = '#ff4444';
+                        }
+                    });
+            }
+        });
+
+        // SLIDESHOW FUNCTIONS
+        function showSlide(n) {
+            const slides = document.getElementsByClassName("slide");
+            const dots = document.getElementsByClassName("dot");
+            
+            if (slides.length === 0) return;
+            
+            if (n >= slides.length) slideIndex = 0;
+            if (n < 0) slideIndex = slides.length - 1;
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            
+            slides[slideIndex].style.display = "block";
+            if (dots[slideIndex]) {
+                dots[slideIndex].className += " active";
+            }
+        }
+
+        function changeSlide(n) {
+            clearInterval(slideInterval);
+            slideIndex += n;
+            showSlide(slideIndex);
+            startAutoPlay();
+        }
+
+        function currentSlide(n) {
+            clearInterval(slideInterval);
+            slideIndex = n;
+            showSlide(slideIndex);
+            startAutoPlay();
+        }
+
+        function startAutoPlay() {
+            const slides = document.getElementsByClassName("slide");
+            if (slides.length === 0) return;
+            
+            slideInterval = setInterval(() => {
+                slideIndex++;
+                if (slideIndex >= slides.length) slideIndex = 0;
+                showSlide(slideIndex);
+            }, 3000);
+        }
+
+        // Initialize slideshow on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.getElementsByClassName("slide");
+            if (slides.length > 0) {
+                showSlide(0);
+                startAutoPlay();
+            }
+        });
+
+        // AUTO-SUBMIT DATE
+        document.querySelector('input[name="start_date"]').addEventListener('change', function() {
+            this.closest('form').submit();
+        });
+
+        // CLEAR PHOTOS
+        function clearPhotos() {
+            if (confirm('⚠️ Are you sure you want to clear all photos?')) {
+                fetch('/clear_photos', { method: 'POST' })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        }
+                    });
+            }
+        }
+
+        // RESET ALL
+        function resetData() {
+            if (confirm('⚠️ Are you sure you want to reset all data? This will delete everything.')) {
+                fetch('/reset', { method: 'POST' })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        }
+                    });
+            }
+        }
+
+        // FILE INPUT - Show selected count for photos
+        const photoInput = document.getElementById('photos-upload');
+        if (photoInput) {
+            photoInput.addEventListener('change', function(e) {
+                const label = this.previousElementSibling;
+                const count = this.files.length;
+                if (count > 0) {
+                    label.textContent = '📷 ' + count + ' photo(s) selected';
+                } else {
+                    label.textContent = 'Select multiple photos from your device';
+                }
+            });
+        }
+
+        // FILE INPUT - Show selected file for music
+        const musicInput = document.getElementById('music-upload');
+        if (musicInput) {
+            musicInput.addEventListener('change', function(e) {
+                const label = this.previousElementSibling;
+                if (this.files && this.files[0]) {
+                    label.textContent = '🎵 ' + this.files[0].name;
+                } else {
+                    label.textContent = 'Choose a music file from your device';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
